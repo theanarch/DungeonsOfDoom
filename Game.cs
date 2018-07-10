@@ -30,7 +30,13 @@ namespace DungeonsOfDoom
 
         void DisplayStats()
         {
-            Console.WriteLine($"Health: {player.Health}");
+            Console.WriteLine($"Health: {player.Health} | Damage: {player.Damage} | Armor: {player.Armor}");
+            string backpack = "";
+            foreach (var item in player.backpack)
+            {
+                backpack += item.Name + " ";
+            }
+            Console.WriteLine($"Backpack: {backpack}");
         }
 
         private void AskForMovement()
@@ -46,6 +52,7 @@ namespace DungeonsOfDoom
                 case ConsoleKey.LeftArrow: newX--; break;
                 case ConsoleKey.UpArrow: newY--; break;
                 case ConsoleKey.DownArrow: newY++; break;
+                case ConsoleKey.I: Inventory(); break;
                 default: isValidMove = false; break;
             }
 
@@ -56,7 +63,38 @@ namespace DungeonsOfDoom
                 player.X = newX;
                 player.Y = newY;
 
-                player.Health--;
+                SearchRoom();
+            }
+        }
+
+        private void Inventory()
+        {
+            Console.Clear();
+            Console.WriteLine($"You have encountered the mighty");
+            Console.WriteLine($"Rat says: you wanna die!??");
+            Console.WriteLine($"");
+            Console.ReadKey();
+        }
+
+        private void SearchRoom()
+        {
+            Room currentRoom = world[player.X, player.Y];
+            Monster monster = currentRoom.Monster;
+            if (currentRoom.Monster != null)
+            {
+                player.Fight(monster);
+                monster.Fight(player);
+                if (monster.Health <= 0)
+                {
+                    Console.WriteLine($"You have slain a {monster.Name.ToString().ToLower()}");
+                    currentRoom.Monster = null;
+                    Console.ReadKey();
+                }
+            }
+            else if (currentRoom.Item != null)
+            {
+                player.AddToBackpack(currentRoom.Item);
+                currentRoom.Item = null;
             }
         }
 
@@ -114,8 +152,7 @@ namespace DungeonsOfDoom
                     {
                         if (random.Next(0, 100) < 10)
                             world[x, y].Monster = GenerateMonster();
-
-                        if (random.Next(0, 100) < 10)
+                        else if (random.Next(0, 100) < 10)
                             world[x, y].Item = GenerateItem();
                     }
                 }
@@ -150,11 +187,11 @@ namespace DungeonsOfDoom
             Monster monster;
             if (random.Next(0, 100) < 20)
             {
-                monster = new Monster(40, "Chimera", 4, 2);
+                monster = new Ogre(40, "Ogre", 4, 2);
             }
             else
             {
-                monster = new Monster(20, "Rat", 2, 0);
+                monster = new Skeleton(200, "Skeleton", 2, 0);
             }
             return monster;
         }

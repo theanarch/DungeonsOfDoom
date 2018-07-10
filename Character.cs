@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DungeonsOfDoom
 {
-    class Character
+    abstract class Character
     {
         public Character(int health, int damage, int armor)
         {
@@ -14,8 +14,55 @@ namespace DungeonsOfDoom
             Damage = damage;
             Armor = armor;
         }
-        public int Health { get; set; }
-        public int Damage { get; set; }
-        public int Armor { get; set; }
+        private int health;
+        public int Health
+        {
+            get
+            {
+                return health;
+            }
+            set
+            {
+                if (value >= 0)
+                    health = value;
+            }
+        }
+        private int damage;
+        public int Damage
+        {
+            get
+            {
+                return damage;
+            }
+            set
+            {
+                if (value >= 0)
+                    damage = value;
+            }
+        }
+
+        private int armor;
+        public int Armor
+        {
+            get
+            {
+                return armor;
+            }
+            set
+            {
+                if (value >= 0)
+                    armor = value;
+                else
+                    armor = 0;
+            }
+        }
+
+        public virtual void Fight(Character opponent)
+        {
+            if (opponent.Armor > 0)
+                opponent.Armor -= this.Damage;
+            else
+                opponent.Health -= this.Damage;
+        }
     }
 }

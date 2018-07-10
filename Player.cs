@@ -12,9 +12,24 @@ namespace DungeonsOfDoom
         {
             X = x;
             Y = y;
+            backpack = new List<Item>();
         }
         public int X { get; set; }
         public int Y { get; set; }
         public int Inventory { get; set; } = 0;
+        public int Capacity { get; set; }
+        public List<Item> backpack;
+
+        public void AddToBackpack(Item item)
+        {
+            switch (item)
+            {
+                case Weapon w: this.Damage += w.Damage; break;
+                case Consumable c: this.Health += c.Effect; break;
+                case Armor a: this.Armor += a.DamageReduction; break;
+                default: break;
+            }
+            backpack.Add(item);
+        }
     }
 }
