@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,6 +17,8 @@ namespace DungeonsOfDoom
         {
             CreatePlayer();
             CreateWorld();
+            //using (SoundPlayer soundplayer = new SoundPlayer("c:\\project\\cello.wav"))
+            //    soundplayer.PlayLooping();
 
             do
             {
@@ -31,12 +34,10 @@ namespace DungeonsOfDoom
         void DisplayStats()
         {
             Console.WriteLine($"Health: {player.Health} | Damage: {player.Damage} | Armor: {player.Armor}");
-            string backpack = "";
-            foreach (var item in player.backpack)
+            foreach (var item in player.Backpack)
             {
-                backpack += item.Name + " ";
+                Console.WriteLine($"{item.Name}");
             }
-            Console.WriteLine($"Backpack: {backpack}");
         }
 
         private void AskForMovement()
@@ -87,13 +88,14 @@ namespace DungeonsOfDoom
                 if (monster.Health <= 0)
                 {
                     Console.WriteLine($"You have slain a {monster.Name.ToString().ToLower()}");
+                    player.PickUp(monster);
                     currentRoom.Monster = null;
                     Console.ReadKey();
                 }
             }
             else if (currentRoom.Item != null)
             {
-                player.AddToBackpack(currentRoom.Item);
+                player.PickUp(currentRoom.Item);
                 currentRoom.Item = null;
             }
         }
@@ -166,15 +168,15 @@ namespace DungeonsOfDoom
             switch (itemSelect)
             {
                 case 0:
-                    item = new Weapon("Sword", 12, 12, 12);
+                    item = new Weapon("Sword", 12, 12, 12, 10);
                     break;
 
                 case 1:
-                    item = new Consumable("HealthPotion", 12, 12, 12);
+                    item = new Consumable("HealthPotion", 12, 12, 12,10);
                     break;
 
                 case 2:
-                    item = new Armor("Shield", 12, 12, 12);
+                    item = new Armor("Shield", 12, 12, 12, 10);
                     break;
                 default:
                     break;
@@ -187,18 +189,18 @@ namespace DungeonsOfDoom
             Monster monster;
             if (random.Next(0, 100) < 20)
             {
-                monster = new Ogre(40, "Ogre", 4, 2);
+                monster = new Ogre(40, "Ogre", 4, 2, 30, 300);
             }
             else
             {
-                monster = new Skeleton(200, "Skeleton", 2, 0);
+                monster = new Skeleton(200, "Skeleton", 2, 0, 2, 10);
             }
             return monster;
         }
 
         private void CreatePlayer()
         {
-            player = new Player(30, 0, 0, 5, 0);
+            player = new Player(30, 0, 0, 5, 0, 30, 150);
         }
     }
 }

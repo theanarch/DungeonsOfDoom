@@ -6,14 +6,23 @@ using System.Threading.Tasks;
 
 namespace DungeonsOfDoom
 {
-    abstract class Character
+    abstract class Character : IPickupAble
     {
-        public Character(int health, int damage, int armor)
+        public Character(string name, int health, int damage, int armor, int weight, int objMaxCap)
         {
+            Name = name;
             Health = health;
             Damage = damage;
             Armor = armor;
+            Weight = weight;
+            ObjMaxCap = objMaxCap;
+            CurerentWeight = 0;
         }
+        public string Name { get; }
+        public int Weight { get; private set; }  // private kan ändå användas i konstruktorn
+        public int CurerentWeight { get; set; }
+        public int ObjMaxCap { get; private set; }
+        public List<IPickupAble> Backpack { get; } = new List<IPickupAble>();
         private int health;
         public int Health
         {
@@ -57,12 +66,22 @@ namespace DungeonsOfDoom
             }
         }
 
+
         public virtual void Fight(Character opponent)
         {
             if (opponent.Armor > 0)
                 opponent.Armor -= this.Damage;
             else
                 opponent.Health -= this.Damage;
+        }
+
+        public void PickUp(IPickupAble pickupAble)
+        {
+            if (pickupAble.Weight + this.CurerentWeight <= this.ObjMaxCap)
+            {
+                Backpack.Add(pickupAble);
+                this.CurerentWeight += pickupAble.Weight;
+            }
         }
     }
 }

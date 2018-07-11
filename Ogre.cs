@@ -8,7 +8,7 @@ namespace DungeonsOfDoom
 {
     class Ogre : Monster
     {
-        public Ogre(int health, string name, int damage, int armor) : base(health, name, damage, armor)
+        public Ogre(int health, string name, int damage, int armor, int weight, int objMaxCap) : base(health, name, damage, armor, weight, objMaxCap)
         {
 
         }

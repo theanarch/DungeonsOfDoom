@@ -8,7 +8,7 @@ namespace DungeonsOfDoom
 {
     class Consumable : Item
     {
-        public Consumable(string name, int weight, int durability, int effect) : base(name, weight, durability)
+        public Consumable(string name, int weight, int durability, int effect, int objMaxCap) : base(name, weight, durability, objMaxCap)
         {
             Effect = effect;
         }

@@ -8,7 +8,7 @@ namespace DungeonsOfDoom
 {
     class Armor : Item
     {
-        public Armor(string name, int weight, int damageReduction, int durability) : base(name, weight, durability)
+        public Armor(string name, int weight, int damageReduction, int durability, int objMaxCap) : base(name, weight, durability, objMaxCap)
         {
             DamageReduction = damageReduction;
         }

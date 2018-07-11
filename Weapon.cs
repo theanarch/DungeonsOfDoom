@@ -9,7 +9,7 @@ namespace DungeonsOfDoom
     class Weapon : Item
     {
 
-        public Weapon(string name, int weight, int damage, int durability) : base(name, weight, durability)
+        public Weapon(string name, int weight, int damage, int durability, int objMaxCap) : base(name, weight, durability, objMaxCap)
         {
             Damage = damage;
         }

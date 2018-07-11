@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace DungeonsOfDoom
 {
-    class Monster : Character
+    internal class Monster : Character, IPickupAble
     {
-        public Monster(int health, string name, int damage, int armor) : base(health, damage, armor)
+        public Monster(int health, string name, int damage, int armor, int weight, int objMaxCap) : base(name, health, damage, armor, weight, objMaxCap)
         {
-            Name = name;
         }
-        public string Name { get; set; }
     }
 }
